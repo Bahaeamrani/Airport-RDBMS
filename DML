@@ -1,0 +1,59 @@
+INSERT INTO PLANE_MODEL (model_name, manufacturer, max_range)
+VALUES
+('Boeing 737', 'Boeing', 5600),
+('Airbus A320', 'Airbus', 6100),
+('Boeing 777', 'Boeing', 15600);
+
+INSERT INTO AIRPLANE (plane_no, model_id, capacity, manufacture_year, status)
+VALUES
+('ERC001', 1, 180, 2018, 'Active'),
+('ERC002', 2, 160, 2020, 'Active'),
+('ERC003', 3, 320, 2017, 'Maintenance');
+
+INSERT INTO HANGAR (hangar_no, location, max_capacity)
+VALUES
+('H1', 'North Zone', 10),
+('H2', 'South Zone', 15);
+
+INSERT INTO TEST (test_name, max_score, frequency_days)
+VALUES
+('Engine Test', 100, 180),
+('Safety Inspection', 100, 90),
+('Hydraulic Test', 100, 120);
+
+INSERT INTO WORKER (ssn, first_name, last_name, salary, hire_date, phone)
+VALUES
+('1001', 'Ahmet', 'Demir', 5000, '2021-01-15', '5551111'),
+('1002', 'Mehmet', 'Kaya', 7000, '2019-06-10', '5552222'),
+('1003', 'Ali', 'Yilmaz', 6500, '2020-09-20', '5553333');
+
+INSERT INTO EMPLOYEE (ssn, union_membership_no)
+VALUES
+('1001', 'UN001'),
+('1002', 'UN002');
+
+INSERT INTO TECHNICIAN (ssn, specialization_level)
+VALUES
+('1001', 'Senior'),
+('1002', 'Expert');
+
+INSERT INTO TRAFFIC_CONTROLLER (ssn, last_medical_exam)
+VALUES
+('1003', '2025-11-15');
+
+INSERT INTO TECHNICIAN_EXPERTISE (technician_ssn, model_id)
+VALUES
+('1001', 1),
+('1001', 2),
+('1002', 3);
+
+INSERT INTO HANGAR_HISTORY (plane_id, hangar_id, check_in, check_out)
+VALUES
+(1, 1, '2026-01-10 09:00:00', NULL),
+(2, 2, '2026-01-11 11:00:00', '2026-01-15 14:00:00');
+
+INSERT INTO TEST_EVENT (plane_id, technician_ssn, test_id, test_date, hours_spent, score)
+VALUES
+(1, '1001', 1, '2026-02-10', 3.5, 88),
+(2, '1001', 2, '2026-02-11', 2.0, 91),
+(3, '1002', 1, '2026-02-12', 5.0, 84);
