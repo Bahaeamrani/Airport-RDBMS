@@ -1,0 +1,124 @@
+CREATE TABLE PLANE_MODEL (
+    model_id INT PRIMARY KEY AUTO_INCREMENT,
+    model_name VARCHAR(100) NOT NULL,
+    manufacturer VARCHAR(100) NOT NULL,
+    max_range INT NOT NULL
+);
+
+CREATE TABLE AIRPLANE (
+    plane_id INT PRIMARY KEY AUTO_INCREMENT,
+    plane_no VARCHAR(20) UNIQUE NOT NULL,
+    model_id INT NOT NULL,
+    capacity INT NOT NULL,
+    manufacture_year YEAR,
+    status VARCHAR(50),
+
+    FOREIGN KEY (model_id)
+    REFERENCES PLANE_MODEL(model_id)
+);
+
+CREATE TABLE HANGAR (
+    hangar_id INT PRIMARY KEY AUTO_INCREMENT,
+    hangar_no VARCHAR(20) UNIQUE NOT NULL,
+    location VARCHAR(100),
+    max_capacity INT CHECK (max_capacity > 0)
+);
+
+CREATE TABLE HANGAR_HISTORY (
+    history_id INT PRIMARY KEY AUTO_INCREMENT,
+    plane_id INT NOT NULL,
+    hangar_id INT NOT NULL,
+    check_in DATETIME NOT NULL,
+    check_out DATETIME,
+
+    FOREIGN KEY (plane_id)
+    REFERENCES AIRPLANE(plane_id),
+
+    FOREIGN KEY (hangar_id)
+    REFERENCES HANGAR(hangar_id)
+);
+
+CREATE TABLE TEST (
+    test_id INT PRIMARY KEY AUTO_INCREMENT,
+    test_name VARCHAR(100) NOT NULL,
+    max_score INT DEFAULT 100,
+    frequency_days INT
+);
+
+CREATE TABLE WORKER (
+    ssn VARCHAR(20) PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    salary DECIMAL(10,2),
+    hire_date DATE,
+    phone VARCHAR(20)
+);
+
+CREATE TABLE EMPLOYEE (
+    ssn VARCHAR(20) PRIMARY KEY,
+    union_membership_no VARCHAR(50) UNIQUE NOT NULL,
+
+    FOREIGN KEY (ssn)
+    REFERENCES WORKER(ssn)
+);
+
+CREATE TABLE TECHNICIAN (
+    ssn VARCHAR(20) PRIMARY KEY,
+    specialization_level VARCHAR(50),
+
+    FOREIGN KEY (ssn)
+    REFERENCES EMPLOYEE(ssn)
+);
+
+CREATE TABLE TRAFFIC_CONTROLLER (
+    ssn VARCHAR(20) PRIMARY KEY,
+    last_medical_exam DATE NOT NULL,
+
+    FOREIGN KEY (ssn)
+    REFERENCES WORKER(ssn)
+);
+
+CREATE TABLE TECHNICIAN_EXPERTISE (
+    technician_ssn VARCHAR(20),
+    model_id INT,
+
+    PRIMARY KEY (technician_ssn, model_id),
+
+    FOREIGN KEY (technician_ssn)
+    REFERENCES TECHNICIAN(ssn),
+
+    FOREIGN KEY (model_id)
+    REFERENCES PLANE_MODEL(model_id)
+);
+
+CREATE TABLE TEST_EVENT (
+    event_id INT PRIMARY KEY AUTO_INCREMENT,
+    plane_id INT NOT NULL,
+    technician_ssn VARCHAR(20) NOT NULL,
+    test_id INT NOT NULL,
+    test_date DATE NOT NULL,
+    hours_spent DECIMAL(5,2) CHECK (hours_spent > 0),
+    score INT CHECK (score BETWEEN 0 AND 100),
+
+    FOREIGN KEY (plane_id)
+    REFERENCES AIRPLANE(plane_id),
+
+    FOREIGN KEY (technician_ssn)
+    REFERENCES TECHNICIAN(ssn),
+
+    FOREIGN KEY (test_id)
+    REFERENCES TEST(test_id)
+);
+
+CREATE TABLE FLIGHT (
+    flight_id INT PRIMARY KEY AUTO_INCREMENT,
+    plane_id INT NOT NULL,
+    destination VARCHAR(100),
+    departure_time DATETIME,
+    arrival_time DATETIME,
+    flight_status VARCHAR(50),
+
+    FOREIGN KEY (plane_id)
+    REFERENCES AIRPLANE(plane_id)
+);
+
