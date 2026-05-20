@@ -1,0 +1,116 @@
+SQL Queries for Management
+
+Query 1 – Total Number of Tests Per Airplane
+SELECT plane_id, COUNT(*) AS total_tests
+FROM TEST_EVENT
+GROUP BY plane_id;
+/////////////////////////////////////////////////////////////////
+Query 2 – Average Score Per Airplane
+SELECT plane_id, AVG(score) AS average_score
+FROM TEST_EVENT
+GROUP BY plane_id;
+/////////////////////////////////////////////////////////////////
+Query 3 – Best Technician Based on Average Test Score
+SELECT technician_ssn, AVG(score) AS average_score
+FROM TEST_EVENT
+GROUP BY technician_ssn
+ORDER BY average_score DESC;
+/////////////////////////////////////////////////////////////////
+Query 4 – Current Airplanes Inside Hangars
+SELECT plane_id, hangar_id, check_in
+FROM HANGAR_HISTORY
+WHERE check_out IS NULL;
+/////////////////////////////////////////////////////////////////
+Query 5 – Total Working Hours Per Technician
+SELECT technician_ssn, SUM(hours_spent) AS total_hours
+FROM TEST_EVENT
+GROUP BY technician_ssn;
+/////////////////////////////////////////////////////////////////
+Query 6 – Number of Airplanes Per Model
+SELECT pm.model_name, COUNT(a.plane_id) AS total_planes
+FROM PLANE_MODEL pm
+JOIN AIRPLANE a
+ON pm.model_id = a.model_id
+GROUP BY pm.model_name;
+/////////////////////////////////////////////////////////////////
+Query 7 – Airplanes That Failed Tests
+SELECT plane_id, score
+FROM TEST_EVENT
+WHERE score < 60;
+/////////////////////////////////////////////////////////////////
+Query 8 – Most Frequently Used Hangar
+SELECT hangar_id, COUNT(*) AS usage_count
+FROM HANGAR_HISTORY
+GROUP BY hangar_id
+ORDER BY usage_count DESC;
+/////////////////////////////////////////////////////////////////
+Query 9 – Controllers With Expired Medical Exams
+SELECT ssn, last_medical_exam
+FROM TRAFFIC_CONTROLLER
+WHERE last_medical_exam < CURDATE() - INTERVAL 1 YEAR;
+/////////////////////////////////////////////////////////////////
+Query 10 – Average Test Score By Test Type
+SELECT t.test_name, AVG(te.score) AS average_score
+FROM TEST t
+JOIN TEST_EVENT te
+ON t.test_id = te.test_id
+GROUP BY t.test_name;
+/////////////////////////////////////////////////////////////////
+Query 11 – Airplanes Manufactured After 2018
+SELECT *
+FROM AIRPLANE
+WHERE manufacture_year > 2018;
+/////////////////////////////////////////////////////////////////
+Query 12 – Number of Flights Per Airplane
+SELECT plane_id, COUNT(*) AS total_flights
+FROM FLIGHT
+GROUP BY plane_id;
+/////////////////////////////////////////////////////////////////
+Query 13 – Highest Test Score
+SELECT MAX(score) AS highest_score
+FROM TEST_EVENT;
+/////////////////////////////////////////////////////////////////
+Query 14 – Employees Hired After 2020
+SELECT first_name, last_name, hire_date
+FROM WORKER
+WHERE hire_date > '2020-01-01';
+/////////////////////////////////////////////////////////////////
+Query 15 – Technician Expertise Count
+SELECT technician_ssn, COUNT(model_id) AS expertise_count
+FROM TECHNICIAN_EXPERTISE
+GROUP BY technician_ssn;
+/////////////////////////////////////////////////////////////////
+Query 16 – Flights Delayed
+SELECT *
+FROM FLIGHT
+WHERE flight_status = 'Delayed';
+/////////////////////////////////////////////////////////////////
+Query 17 – Monthly Testing Statistics
+SELECT MONTH(test_date) AS month_no,
+COUNT(*) AS total_tests
+FROM TEST_EVENT
+GROUP BY MONTH(test_date);
+/////////////////////////////////////////////////////////////////
+Query 18 – Average Airplane Capacity Per Model
+SELECT pm.model_name,
+AVG(a.capacity) AS avg_capacity
+FROM PLANE_MODEL pm
+JOIN AIRPLANE a
+ON pm.model_id = a.model_id
+GROUP BY pm.model_name;
+/////////////////////////////////////////////////////////////////
+Query 19 – Latest Test Per Airplane
+SELECT plane_id,
+MAX(test_date) AS latest_test
+FROM TEST_EVENT
+GROUP BY plane_id;
+/////////////////////////////////////////////////////////////////
+Query 20 – Full Airplane Details
+SELECT a.plane_no,
+pm.model_name,
+pm.manufacturer,
+a.capacity,
+a.status
+FROM AIRPLANE a
+JOIN PLANE_MODEL pm
+ON a.model_id = pm.model_id;
